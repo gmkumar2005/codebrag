@@ -69,7 +69,7 @@ trait CommitsEndpoint extends JsonServletWithAuthentication {
   private def commitsToReview = params.get(FilterParamName).isDefined && params(FilterParamName) == ToReviewCommitsFilter
   private def allCommits = params.get(FilterParamName).isDefined && params(FilterParamName) == AllCommitsFilter
 
-  private def extractBrowsingContext = UserBrowsingContext(user.id, extractReqUrlParam("repo"), extractReqUrlParam("branch"))
+  private def extractBrowsingContext = UserBrowsingContext(user.id, extractReqUrlParam("repo"), extractReqUrlParam("branch"),params.getOrElse(ForAuthorParamName,""))
 
   private def extractPagingCriteria = {
     val minSha = params.get(MinShaParamName)
@@ -104,5 +104,6 @@ object CommitsEndpoint {
   val MinShaParamName = "min_sha"
   val MaxShaParamName = "max_sha"
   val SelectedShaParamName = "selected_sha"
+  val ForAuthorParamName =  "for_author"
 
 }

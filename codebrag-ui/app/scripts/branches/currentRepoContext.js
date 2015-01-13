@@ -12,6 +12,7 @@ angular.module('codebrag.branches')
             commitsFilter: TO_REVIEW,
             repo: null,
             branch: null,
+            authorFilter: null,
 
             ready: function () {
                 return contextReady.promise;
@@ -38,6 +39,12 @@ angular.module('codebrag.branches')
             switchCommitsFilter: function (newFilter) {
                 this.commitsFilter = (newFilter === TO_REVIEW ? newFilter : ALL);
                 $rootScope.$broadcast(events.commitsListFilterChanged, this.commitsFilter);
+            },
+            
+            switchAuthor: function (newAuthor) {
+                this.authorFilter = newAuthor;               
+                $rootScope.$broadcast(events.branches.authorChanged, newAuthor);
+                saveUserContext(this);
             }
         };
 

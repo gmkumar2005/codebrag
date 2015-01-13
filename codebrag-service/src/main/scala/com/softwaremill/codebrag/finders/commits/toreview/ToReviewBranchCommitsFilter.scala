@@ -9,16 +9,17 @@ import com.softwaremill.codebrag.domain.CommitAuthorClassification._
 
 class ToReviewBranchCommitsFilter(reviewedCommitsCache: UserReviewedCommitsCache, config: ReviewProcessConfig) {
 
-   def filterCommitsToReview(branchCommits: List[BranchCommitCacheEntry], user: User, repoName: String) = {
+   def filterCommitsToReview(branchCommits: List[BranchCommitCacheEntry], user: User, repoName: String, authorName:String ) = {
      val userBoundaryDate = reviewedCommitsCache.getEntry(user.id, repoName).toReviewStartDate
-     filterCommitsToReviewSince(userBoundaryDate, branchCommits, user, repoName)
+     filterCommitsToReviewSince(userBoundaryDate, branchCommits, user, repoName,authorName)
    }
 
-   def filterCommitsToReviewSince(date: DateTime, branchCommits: List[BranchCommitCacheEntry], user: User, repoName: String) = {
+   def filterCommitsToReviewSince(date: DateTime, branchCommits: List[BranchCommitCacheEntry], user: User, repoName: String , authorName:String) = {
      branchCommits
        .filterNot(userOrDoneCommits(repoName, _, user))
        .filterNot(commitTooOld(_, date))
        .filter(notYetFullyReviewed(repoName, _))
+       .filter(selectAuthor(_,authorName))
        .map(_.sha)
        .reverse
    }
@@ -39,4 +40,11 @@ class ToReviewBranchCommitsFilter(reviewedCommitsCache: UserReviewedCommitsCache
      val commitsReviewedByUser = reviewedCommitsCache.getEntry(userId, repoName).commits
      commitsReviewedByUser.find(_.sha == commit.sha).nonEmpty
    }
+  private def selectAuthor (commitEntry: BranchCommitCacheEntry, authorName : String ) : Boolean = {
+   if (authorName != null && !authorName.isEmpty){
+   return (commitEntry.authorName.toLowerCase == authorName) } else {
+   return true
+   }
+  }
+
 }

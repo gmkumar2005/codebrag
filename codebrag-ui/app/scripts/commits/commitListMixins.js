@@ -102,6 +102,7 @@ codebrag.commitsList.mixin.urlParams = function(target) {
         limit: 'limit',
         filter: 'filter',
         branch: 'branch',
-        repo: 'repo'
+        repo: 'repo',
+        authorFilter : 'for_author'
     }
 };

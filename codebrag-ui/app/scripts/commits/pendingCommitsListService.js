@@ -23,6 +23,9 @@ angular.module('codebrag.commits')
             options[self.urlParams.limit] = pageLimit;
             options[self.urlParams.branch] = currentRepoContext.branch;
             options[self.urlParams.repo] = currentRepoContext.repo;
+            if(currentRepoContext.authorFilter){
+            options[self.urlParams.authorFilter] = currentRepoContext.authorFilter.split("@")[0].toLowerCase();
+            }
             return Commits.queryReviewable(options).$then(function(response) {
                 var list = _mixInreviewStateMethods(response.data.commits);
                 commits.replaceWith(list);

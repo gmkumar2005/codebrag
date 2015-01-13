@@ -7,9 +7,11 @@ angular.module('codebrag.commits')
         $scope.$on(events.branches.branchChanged, loadCommits);
         $scope.$on(events.commitsListFilterChanged, loadCommits);
         $scope.$on(events.profile.emailAliasesChanged, loadCommits);
+        $scope.$on(events.branches.authorChanged, loadCommits);
+        
 
         $scope.hasNextCommits = function() {
-            return commitsService.hasNextCommits();                                                                      9
+            return commitsService.hasNextCommits();
         };
 
         $scope.hasPreviousCommits = function() {

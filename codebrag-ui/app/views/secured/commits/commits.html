@@ -3,7 +3,7 @@
         <div class="commits-tab-header row">
             <div class="small-3 large-3 columns">
                 <div class="branch-selector row" ng-controller="BranchesCtrl">
-                    <div class="small-7 large-7 columns">
+                    <div class="small-1 small-1 columns">
                         <div class="repo-btn" ng-controller="ReposCtrl">
                             <div class="dropdown-btn btn-small">
                                 <div class="selected text-center">
@@ -24,6 +24,16 @@
                                 </ul>
                             </dropdown>
                         </div>
+                         <div class="repo-btn" ng-controller="ManageUsersPopupCtrl">
+                            <div class="dropdown-btn btn-small">
+                                <div class="selected text-center">
+                                    <span class="octicon octicon-repo"></span>
+                                </div>
+                                <ul class="branches-list">
+                                    <li style="white-space: nowrap" ng-repeat="user in users" ng-click="selectAuthor(user)" ng-class="{'selected': isAuthorSelected(user)}">{{ user.email}}</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="columns" ng-class="{'small-5 large-5': showBranchesSelector, 'small-11 large-11': !showBranchesSelector}">
                         <dropdown selected="displaySelectedMode()">
@@ -38,6 +48,7 @@
                             </ul>
                         </dropdown>
                     </div>
+
                 </div>
             </div>
             <div class="small-9 large-9 columns">

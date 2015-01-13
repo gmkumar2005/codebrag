@@ -41,6 +41,12 @@ angular.module('codebrag.branches')
         $scope.toggleWatching = function(branch) {
             branchesService.toggleWatching(currentRepoContext.repo, branch);
         };
+        $scope.isAuthorSelected = function(user) {
+            return currentRepoContext.authorFilter === user.email;
+        };
+        $scope.selectAuthor = function(selected) {
+            currentRepoContext.switchAuthor(selected.email);
+        };
 
     });
 

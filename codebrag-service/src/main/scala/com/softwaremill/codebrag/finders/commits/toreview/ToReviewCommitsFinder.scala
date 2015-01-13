@@ -20,14 +20,14 @@ class ToReviewCommitsFinder(
   def find(browsingContext: UserBrowsingContext, pagingCriteria: PagingCriteria[String]): CommitListView = {
     val user = loadUser(browsingContext.userId)
     val allBranchCommits = repoCache.getBranchCommits(browsingContext.repoName, browsingContext.branchName)
-    val toReviewBranchCommits = toReviewCommitsFilter.filterCommitsToReview(allBranchCommits, user, browsingContext.repoName)
+    val toReviewBranchCommits = toReviewCommitsFilter.filterCommitsToReview(allBranchCommits, user, browsingContext.repoName, browsingContext.authorName)
     toReviewCommitsViewBuilder.toPageView(browsingContext.repoName, toReviewBranchCommits, pagingCriteria)
   }
 
   def count(browsingContext: UserBrowsingContext): Long = {
     val user = loadUser(browsingContext.userId)
     val allBranchCommits = repoCache.getBranchCommits(browsingContext.repoName, browsingContext.branchName)
-    toReviewCommitsFilter.filterCommitsToReview(allBranchCommits, user, browsingContext.repoName).length
+    toReviewCommitsFilter.filterCommitsToReview(allBranchCommits, user, browsingContext.repoName,browsingContext.authorName).length
   }
 
   def countSince(date: DateTime, browsingContext: UserBrowsingContext): Long = {
@@ -35,9 +35,9 @@ class ToReviewCommitsFinder(
     val branchCommits = repoCache
       .getBranchCommits(browsingContext.repoName, browsingContext.branchName)
       .filter(bc => bc.commitDate.isAfter(date) || bc.commitDate.isEqual(date))
-    toReviewCommitsFilter.filterCommitsToReview(branchCommits, user, browsingContext.repoName).length
+    toReviewCommitsFilter.filterCommitsToReview(branchCommits, user, browsingContext.repoName,browsingContext.authorName).length
   }
-
+  
   def countForUserRepoAndBranch(userId: ObjectId): Long = {
     val userDefaultContext = userBrowsingContextFinder.findUserDefaultContext(userId)
     count(userDefaultContext)

@@ -6,7 +6,7 @@ import org.bson.types.ObjectId
 import com.typesafe.scalalogging.slf4j.Logging
 import com.softwaremill.codebrag.domain.UserRepoDetails
 
-case class UserBrowsingContext(userId: ObjectId, repoName: String, branchName: String)
+case class UserBrowsingContext(userId: ObjectId, repoName: String, branchName: String , authorName : String ="")
 
 object UserBrowsingContext {
   def apply(d: UserRepoDetails) = new UserBrowsingContext(d.userId, d.repoName, d.branchName)
