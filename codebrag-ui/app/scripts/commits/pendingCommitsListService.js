@@ -64,6 +64,9 @@ angular.module('codebrag.commits')
             options[self.urlParams.limit] = pageLimit;
             options[self.urlParams.branch] = currentRepoContext.branch;
             options[self.urlParams.repo] = currentRepoContext.repo;
+            if(currentRepoContext.authorFilter){
+            options[self.urlParams.authorFilter] = currentRepoContext.authorFilter.split("@")[0].toLowerCase();
+            }
             Commits.queryReviewable(options).$then(function(response) {
                 var list = _mixInreviewStateMethods(response.data.commits);
                 commits.appendAll(list);
@@ -89,6 +92,9 @@ angular.module('codebrag.commits')
             options[self.urlParams.filter] = 'to_review';
             options[self.urlParams.branch] = currentRepoContext.branch;
             options[self.urlParams.repo] = currentRepoContext.repo;
+            if(currentRepoContext.authorFilter){
+            options[self.urlParams.authorFilter] = currentRepoContext.authorFilter.split("@")[0].toLowerCase();
+            }
             prefetchedCommitPromise = Commits.querySilent(options).$then(function(response) {
                 if(!response.data.commits.length) nextCommits = 0;
                 return response.data.commits.shift();
