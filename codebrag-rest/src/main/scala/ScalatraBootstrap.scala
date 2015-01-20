@@ -75,7 +75,7 @@ class ScalatraBootstrap extends LifeCycle with Logging {
     context.mount(new CommitsServlet(authenticator, toReviewCommitsFinder, allCommitsFinder, reactionFinder, addCommentUseCase,
       reviewCommitUseCase, userReactionService, userDao, diffWithCommentsService, unlikeUseCaseFactory, likeUseCase), Prefix + CommitsServlet.MAPPING_PATH)
     context.mount(new FollowupsServlet(authenticator, followupFinder, followupDoneUseCase), Prefix + FollowupsServlet.MappingPath)
-context.mount(new AllFollowupsServlet(authenticator, followupFinder, followupDoneUseCase), Prefix + AllFollowupsServlet.MappingPath)
+    context.mount(new AllFollowupsServlet(authenticator, followupFinder, followupDoneUseCase), Prefix + AllFollowupsServlet.MappingPath)
     context.mount(new VersionServlet, Prefix + "version")
     context.mount(new ConfigServlet(config, authenticator), Prefix + "config")
     context.mount(new InvitationServlet(authenticator, generateInvitationCodeUseCase, sendInvitationEmailUseCase), Prefix + "invitation")
@@ -83,7 +83,7 @@ context.mount(new AllFollowupsServlet(authenticator, followupFinder, followupDon
     context.mount(new RepoStatusServlet(authenticator, repositories.head, repoStatusDao), Prefix + RepoStatusServlet.Mapping)
     context.mount(new RepositoryBranchesServlet(authenticator, toReviewCommitsFinder, listRepoBranches, addBranchToObserved, removeBranchFromObserved), Prefix + RepositoryBranchesServlet.MountPath)
     context.mount(new BrowsingContextServlet(authenticator, userBrowsingContextFinder, updateUserBrowsingContextUseCase), Prefix + BrowsingContextServlet.MappingPath)
-
+	context.mount(new WeeklyStatsServlet(authenticator, allCommitsFinder, statsEventsFinder), Prefix + WeeklyStatsServlet.MappingPath)
     context.mount(new TimingFilter, "/*")
 
     InstanceContext.put(context, beans)

@@ -82,6 +82,45 @@ trait EventDAOSpec extends FlatSpec with ShouldMatchers {
     count should be (1)
 
   }
+  it should "count events group by week" in {
+    // given
+    val user = new ObjectId
+  storeEventWith(today, LikeAddedEventType, user) // 18/01
+	storeEventWith(today, LikeAddedEventType, user) // 18/01
+  storeEventWith(today, CommentAddedEventType, user)
+  storeEventWith(today, CommitReviewedEventType)
+	storeEventWith(yesterday, CommitReviewedEventType)	
+	storeEventWith(yesterday, CommentAddedEventType)
+	storeEventWith(today, LikeAddedEventType) //18/01
+	storeEventWith(yesterday, LikeAddedEventType)
+	storeEventWith(today, CommentAddedEventType)
+  storeEventWith(today.minusDays(1), LikeAddedEventType, user) // 11/01
+  storeEventWith(today.minusDays(1), LikeAddedEventType, user) // 11/01
+  storeEventWith(today.minusDays(1), CommentAddedEventType, user)
+  storeEventWith(today.minusDays(1), CommitReviewedEventType)
+  storeEventWith(yesterday.minusDays(1), CommitReviewedEventType)  
+  storeEventWith(yesterday.minusDays(1), CommentAddedEventType)
+  storeEventWith(today, LikeAddedEventType) // 11/01
+  storeEventWith(yesterday, LikeAddedEventType) // 11/01
+  storeEventWith(today, CommentAddedEventType)	
+	storeEventWith(today.minusWeeks(1), LikeAddedEventType, user)
+	storeEventWith(today.minusWeeks(1), LikeAddedEventType, user)
+  storeEventWith(today.minusWeeks(1), CommentAddedEventType, user)
+  storeEventWith(today.minusWeeks(1), CommitReviewedEventType)
+	storeEventWith(yesterday.minusWeeks(1), CommitReviewedEventType)
+	storeEventWith(today.minusWeeks(1), LikeAddedEventType)
+	storeEventWith(yesterday.minusWeeks(1), LikeAddedEventType)
+	storeEventWith(today.minusWeeks(1), CommentAddedEventType)
+	storeEventWith(yesterday.minusWeeks(1), CommentAddedEventType)
+	storeEventWith(today.minusWeeks(4), CommentAddedEventType)
+	
+	val expectedResult : Map[String,List[Object]] =  Map("series" -> List("CommentAdded", "LikeAdded", "CommitReviewed"), "labels" -> List("22/12", "12/01", "19/01"), "data" -> List(List(1, 4, 5), List(0, 4, 8), List(0, 3, 3)))
+    //when
+	val thisWeekStats = eventDAO.weeklyStatsByEvent(today)
+    // then
+  thisWeekStats should be (expectedResult)
+	
+  }
 
   private def storeEventWith(_date: DateTime, _eventType: String, _userId: ObjectId = new ObjectId) =
     eventDAO.storeEvent(new StatisticEvent {

@@ -1,6 +1,8 @@
 package com.softwaremill.codebrag.dao.finders
 
-import org.joda.time.{DateTimeZone, DateTime}
+import org.joda.time.{DateTime,DateTimeConstants,DateTimeZone}
+import scala.collection.mutable.LinkedHashMap
+
 import com.softwaremill.codebrag.domain.reactions.{LikeEvent, CommentAddedEvent, CommitReviewedEvent}
 import com.typesafe.scalalogging.slf4j.Logging
 import com.softwaremill.codebrag.dao.events.{EventDAO, NewUserRegistered}
@@ -39,5 +41,9 @@ class StatsEventsFinder(eventDAO: EventDAO) extends Logging{
     val dateBounds = dayBoundaries(day)
     eventDAO.countEvents(dateBounds._1, dateBounds._2, eventType)
   }
-
+ 
+  def weeklyStats() : Map[String,List[Object]] = {
+    eventDAO.weeklyStatsByEvent(new DateTime)
+    }
+  
 }

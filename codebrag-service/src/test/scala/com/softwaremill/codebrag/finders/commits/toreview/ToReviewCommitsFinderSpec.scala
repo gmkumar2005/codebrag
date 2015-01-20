@@ -45,7 +45,7 @@ class ToReviewCommitsFinderSpec extends FlatSpec with ShouldMatchers with Mockit
   it should "use provided branch and repo to find commits" in {
     // given
     when(repositoriesCache.getBranchCommits(CodebragRepo, MasterBranch)).thenReturn(NoCommitsInBranch)
-    when(toReviewFilter.filterCommitsToReview(NoCommitsInBranch, Bob, CodebragRepo)).thenReturn(List.empty)
+    when(toReviewFilter.filterCommitsToReview(NoCommitsInBranch, Bob, CodebragRepo,"")).thenReturn(List.empty)
 
     // when
     val context = UserBrowsingContext(Bob.id, CodebragRepo, MasterBranch)
@@ -61,7 +61,7 @@ class ToReviewCommitsFinderSpec extends FlatSpec with ShouldMatchers with Mockit
     val defaultContext = UserBrowsingContext(Bob.id, CodebragRepo, MasterBranch)
     when(browsingContextFinder.findUserDefaultContext(Bob.id)).thenReturn(defaultContext)
     when(repositoriesCache.getBranchCommits(CodebragRepo, MasterBranch)).thenReturn(NoCommitsInBranch)
-    when(toReviewFilter.filterCommitsToReview(NoCommitsInBranch, Bob, CodebragRepo)).thenReturn(List.empty)
+    when(toReviewFilter.filterCommitsToReview(NoCommitsInBranch, Bob, CodebragRepo,"")).thenReturn(List.empty)
 
     // when
     finder.countForUserRepoAndBranch(Bob.id)

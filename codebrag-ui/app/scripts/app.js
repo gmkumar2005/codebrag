@@ -163,7 +163,7 @@ angular.module('codebrag.userMgmt').run(function(userMgmtService) {
     userMgmtService.initialize();
 });
 
-angular.module('codebrag.dashboard')
+angular.module('codebrag.dashboard', ['chart.js'])
 .config(function ($stateProvider, authenticatedUser) {
     $stateProvider
         .state('dashboard', {
@@ -174,7 +174,7 @@ angular.module('codebrag.dashboard')
         })
         .state('dashboard.list', {
             url: '',
-            templateUrl: 'views/secured/followups/emptyFollowups.html'
+            templateUrl: 'views/secured/dashboard/dashboardChart.html'
         })
         .state('dashboard.details', {
             url: '/{followupId}/comments/{commentId}',

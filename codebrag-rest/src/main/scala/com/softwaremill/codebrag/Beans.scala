@@ -28,6 +28,7 @@ import com.softwaremill.codebrag.usecases.emailaliases.{DeleteUserAliasUseCase, 
 import com.softwaremill.codebrag.usecases.user._
 import com.softwaremill.codebrag.usecases.notifications.FindUserNotifications
 import com.softwaremill.codebrag.usecases.registration.{UnwatchBranchAfterRegistration, WatchBranchAfterRegistration, ListRepoBranchesAfterRegistration, ListRepositoriesAfterRegistration}
+import com.softwaremill.codebrag.dao.finders.StatsEventsFinder
 
 trait Beans extends ActorSystemSupport with CommitsModule with Daos {
 
@@ -115,5 +116,6 @@ trait Beans extends ActorSystemSupport with CommitsModule with Daos {
 
   lazy val userBrowsingContextFinder = new UserBrowsingContextFinder(userRepoDetailsDao, repositoriesCache)
   lazy val userFinder = new UserFinder(userDao, userBrowsingContextFinder)
+  lazy val statsEventsFinder = new StatsEventsFinder(eventDao)
 
 }
